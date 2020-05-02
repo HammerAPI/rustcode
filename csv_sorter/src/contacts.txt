@@ -1,0 +1,5 @@
+John, Smith, 10 Maple Street, Cullowhee, NC, 28779, 828.123.4567
+   Susan, thompson, 21 Oak Road, Webster, NC, 28711, 828.434.3232
+Sarah, foster, 32 Sycamore Street, Sylva, NC, 28712, 828.112.3456
+bruce, Hampton, 321 Linden Street, Dillsboro, NC, 28123, 828.432.7895
+   Bill, Thompson, 141 Cedar Drive, Sauk City, WI, 43214, 415.323.2254
