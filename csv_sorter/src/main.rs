@@ -1,3 +1,18 @@
+/**
+ * # CSV Sorter
+ *
+ * ## Author: Daniel Hammer
+ *
+ * ### data: 2020/5/2
+ *
+ * ### Description:
+ * This program reads in a CSV composed of information about people, such as
+ * names and addresses. It then stores each entry into a struct, and those
+ * structs into a vector. The vector is sorted by last name (or first, if
+ * last names are identical) and the newly sorted data is written to an
+ * output file.
+ */
+
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
