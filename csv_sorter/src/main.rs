@@ -13,14 +13,13 @@ struct Person {
     city: String,
     state: String,
     zip_code: String,
-    phone_number: String,
 }
 
 // Person constructor
 impl Person {
     fn new(first_name: String, last_name: String,
             street: String, city: String, state: String,
-            zip_code: String, phone_number: String) -> Person {
+            zip_code: String) -> Person {
 
         Person {
             first_name,
@@ -29,7 +28,6 @@ impl Person {
             city,
             state,
             zip_code,
-            phone_number,
         }
     }
 }
@@ -37,7 +35,19 @@ impl Person {
 
 
 
-// Parses command-line arguments 
+/**
+ * Processes command-line arguments
+ *
+ * # Description
+ * This function processes the passed-in command line arguments and attempts
+ * to open and create valid input/output files from the names given.
+ *
+ * # Arguments
+ * * `args` - A string array of command-line arguments.
+ *
+ * # Returns
+ * * A tuple of the input file and output file if they are found, else errors.
+ */
 fn arg_parser(args: &[String]) -> Result<(File, File), &'static str> {
     
     // Exit if too many or too few arguments were passed
@@ -64,18 +74,38 @@ fn arg_parser(args: &[String]) -> Result<(File, File), &'static str> {
 
 
 
-// Constructs a vector of Person structs from the input file
-fn build_person_list(input_file: &mut File) -> Vec<Person> {
+/**
+ * Builds a list of Person structs
+ *
+ * # Description
+ * This function reads the input file line by line and creates a Person
+ * struct based on the line's contents. It then adds that struct to a vector
+ * and repeats for every line in the file. The final vector contains every
+ * Person struct read in from the file.
+ *
+ * # Arguments
+ * * `input_file` - The input file to read from.
+ *
+ * # Returns
+ * * A vector of type Person containing all Person structs from the file.
+ */
+fn build_person_vec(input_file: &mut File) -> Vec<Person> {
 
     let mut person_vec: Vec<Person> = Vec::new();
     let reader = BufReader::new(input_file);
 
     for line in reader.lines() {
-        let line = line.unwrap(); // Ignore errors.
+
+        let line = line.unwrap();
 
         let data: Vec<&str> = line.split(", ").collect();
 
-        let p = Person::new(String::from(data[0].trim()), String::from(data[1]), String::from(data[2]), String::from(data[3]), String::from(data[4]), String::from(data[5]), String::from(data[6]));
+        let p = Person::new(String::from(data[0].trim()),
+                            String::from(data[1].trim()),
+                            String::from(data[2].trim()),
+                            String::from(data[3].trim()),
+                            String::from(data[4].trim()),
+                            String::from(data[5].trim()));
         person_vec.push(p);
     }
     person_vec
@@ -84,41 +114,60 @@ fn build_person_list(input_file: &mut File) -> Vec<Person> {
 
 
 
-// Sorts the vector of Person structs via selection sort
-fn sort_person_list(person_list: &mut Vec<Person>) {
+/**
+ * Sorts the list of Person structs
+ *
+ * # Description
+ * Sorts via Selection Sort.
+ *
+ * # Arguments
+ * * `person_vec` - A vector containing Person structs.
+ */
+fn sort_person_vec(person_vec: &mut Vec<Person>) {
 
-    for i in 0..person_list.len() {
+    for i in 0..person_vec.len() {
 
         let mut lowest = i;
 
-        for j in (i + 1)..person_list.len() {
+        for j in (i + 1)..person_vec.len() {
 
             // Temporary variables to hold first and last names
-            let j_last = &person_list[j].last_name.to_lowercase();
-            let j_first = &person_list[j].first_name.to_lowercase();
-            let low_last = &person_list[lowest].last_name.to_lowercase();
-            let low_first = &person_list[lowest].first_name.to_lowercase();
+            let j_last = &person_vec[j].last_name.to_lowercase();
+            let j_first = &person_vec[j].first_name.to_lowercase();
+            let low_last = &person_vec[lowest].last_name.to_lowercase();
+            let low_first = &person_vec[lowest].first_name.to_lowercase();
 
             // Swap by last name or first name if last names are equal
             if (j_last < low_last) || (j_last == low_last && j_first < low_first){
                 lowest = j;
             }
         }
-        person_list.swap(lowest, i);
+        person_vec.swap(lowest, i);
     }
 }
 
 
 
 
-// Write the list of Person structs to the output file
-fn write_to_file(person_list: &mut Vec<Person>, output_file: &mut File) {
+/**
+ * Writes data to the output file
+ *
+ * # Description
+ * Writes all Person structs to the output file, catching errors if the file
+ * is not available to be written to.
+ *
+ * # Arguments
+ * * `person_vec` - A vector containing Person structs.
+ * * `output_file` - The file to write to.
+ */
+fn write_to_file(person_vec: &mut Vec<Person>, output_file: &mut File) {
 
-    for p in person_list {
+    for p in person_vec {
+
         // Format the peron's information as a string
-        let info = format!("{}, {}, {}, {}, {}, {}, {}\n",
+        let info = format!("{}, {}, {}, {}, {}, {}\n",
             p.first_name, p.last_name, p.street, p.city,
-            p.state, p.zip_code, p.phone_number);
+            p.state, p.zip_code);
 
         // Write to output file
         match output_file.write_all(info.as_bytes()) {
@@ -131,8 +180,8 @@ fn write_to_file(person_list: &mut Vec<Person>, output_file: &mut File) {
 
 
 
-// Program logic
 fn main() {
+
     let args: Vec<String> = env::args().collect();
 
     // Get the input and output files
@@ -141,9 +190,9 @@ fn main() {
         process::exit(1);
     });
 
-    let mut person_list = build_person_list(&mut input_file);
+    let mut person_vec = build_person_vec(&mut input_file);
 
-    sort_person_list(&mut person_list);
+    sort_person_vec(&mut person_vec);
 
-    write_to_file(&mut person_list, &mut output_file);
+    write_to_file(&mut person_vec, &mut output_file);
 }
