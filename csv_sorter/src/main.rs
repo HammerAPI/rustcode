@@ -3,7 +3,7 @@
  *
  * ## Author: Daniel Hammer
  *
- * ### data: 2020/5/2
+ * ### Date: 2020/5/2
  *
  * ### Description:
  * This program reads in a CSV composed of information about people, such as
