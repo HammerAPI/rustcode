@@ -12,12 +12,10 @@
  * last names are identical) and the newly sorted data is written to an
  * output file.
  */
-
 use std::env;
 use std::fs::File;
 use std::io::{BufRead, BufReader, Write};
 use std::process;
-
 
 // Person struct to hold relevant data
 #[derive(Debug)]
@@ -32,10 +30,14 @@ struct Person {
 
 // Person constructor
 impl Person {
-    fn new(first_name: String, last_name: String,
-            street: String, city: String, state: String,
-            zip_code: String) -> Person {
-
+    fn new(
+        first_name: String,
+        last_name: String,
+        street: String,
+        city: String,
+        state: String,
+        zip_code: String,
+    ) -> Person {
         Person {
             first_name,
             last_name,
@@ -46,9 +48,6 @@ impl Person {
         }
     }
 }
-
-
-
 
 /**
  * Processes command-line arguments
@@ -64,7 +63,6 @@ impl Person {
  * * A tuple of the input file and output file if they are found, else errors.
  */
 fn arg_parser(args: &[String]) -> Result<(File, File), &'static str> {
-    
     // Exit if too many or too few arguments were passed
     if args.len() != 3 {
         return Err("Usage: 'cargo run [input file] [output file]");
@@ -86,9 +84,6 @@ fn arg_parser(args: &[String]) -> Result<(File, File), &'static str> {
     Ok((input_file, output_file))
 }
 
-
-
-
 /**
  * Builds a list of Person structs
  *
@@ -105,29 +100,26 @@ fn arg_parser(args: &[String]) -> Result<(File, File), &'static str> {
  * * A vector of type Person containing all Person structs from the file.
  */
 fn build_person_vec(input_file: &mut File) -> Vec<Person> {
-
     let mut person_vec: Vec<Person> = Vec::new();
     let reader = BufReader::new(input_file);
 
     for line in reader.lines() {
-
         let line = line.unwrap();
 
         let data: Vec<&str> = line.split(", ").collect();
 
-        let p = Person::new(String::from(data[0].trim()),
-                            String::from(data[1].trim()),
-                            String::from(data[2].trim()),
-                            String::from(data[3].trim()),
-                            String::from(data[4].trim()),
-                            String::from(data[5].trim()));
+        let p = Person::new(
+            String::from(data[0].trim()),
+            String::from(data[1].trim()),
+            String::from(data[2].trim()),
+            String::from(data[3].trim()),
+            String::from(data[4].trim()),
+            String::from(data[5].trim()),
+        );
         person_vec.push(p);
     }
     person_vec
 }
-
-
-
 
 /**
  * Sorts the list of Person structs
@@ -139,13 +131,10 @@ fn build_person_vec(input_file: &mut File) -> Vec<Person> {
  * * `person_vec` - A vector containing Person structs.
  */
 fn sort_person_vec(person_vec: &mut Vec<Person>) {
-
     for i in 0..person_vec.len() {
-
         let mut lowest = i;
 
         for j in (i + 1)..person_vec.len() {
-
             // Temporary variables to hold first and last names
             let j_last = &person_vec[j].last_name.to_lowercase();
             let j_first = &person_vec[j].first_name.to_lowercase();
@@ -153,16 +142,13 @@ fn sort_person_vec(person_vec: &mut Vec<Person>) {
             let low_first = &person_vec[lowest].first_name.to_lowercase();
 
             // Swap by last name or first name if last names are equal
-            if (j_last < low_last) || (j_last == low_last && j_first < low_first){
+            if (j_last < low_last) || (j_last == low_last && j_first < low_first) {
                 lowest = j;
             }
         }
         person_vec.swap(lowest, i);
     }
 }
-
-
-
 
 /**
  * Writes data to the output file
@@ -176,13 +162,12 @@ fn sort_person_vec(person_vec: &mut Vec<Person>) {
  * * `output_file` - The file to write to.
  */
 fn write_to_file(person_vec: &mut Vec<Person>, output_file: &mut File) {
-
     for p in person_vec {
-
         // Format the peron's information as a string
-        let info = format!("{}, {}, {}, {}, {}, {}\n",
-            p.first_name, p.last_name, p.street, p.city,
-            p.state, p.zip_code);
+        let info = format!(
+            "{}, {}, {}, {}, {}, {}\n",
+            p.first_name, p.last_name, p.street, p.city, p.state, p.zip_code
+        );
 
         // Write to output file
         match output_file.write_all(info.as_bytes()) {
@@ -192,11 +177,7 @@ fn write_to_file(person_vec: &mut Vec<Person>, output_file: &mut File) {
     }
 }
 
-
-
-
 fn main() {
-
     let args: Vec<String> = env::args().collect();
 
     // Get the input and output files
