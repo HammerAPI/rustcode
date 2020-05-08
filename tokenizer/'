@@ -1,0 +1,65 @@
+use std::env;
+use std::fs::File;
+use std::io::{BufRead, BufReader /*Write*/};
+use std::path::Path;
+use std::process;
+
+fn main() {
+    let args: Vec<String> = env::args().collect();
+
+    if args.len() != 3 {
+        println!("Usage: 'cargo run [input file] [output file]'");
+        process::exit(1);
+    }
+
+    let input_file = File::open(Path::new("src/").join(&args[1]))
+        .unwrap_or_else(|err| panic!("Couldn't open that file: {}", err));
+
+    /*
+    let mut output_file = File::create(Path::new("src/").join(&args[2]))
+        .unwrap_or_else(|err| panic!("Couldn't create that file: {}", err));
+    */
+
+    let reader = BufReader::new(input_file);
+    let mut token = String::from("");
+    //let mut text = String::from("");
+
+    for line in reader.lines() {
+        let line = line.unwrap();
+        let mut chars = line.chars();
+        get_token(&mut chars, &mut token);
+
+        //text = line;
+        //tokenizer(&mut text, &mut token);
+        /*
+        for c in text.chars() {
+            print!("{}", c);
+        }
+        */
+        //println!("{}", text);
+        //println!("{}", token);
+    }
+}
+
+/*
+fn tokenizer(text: &mut String, token: &mut String) {
+    //line = token;
+    for c in text.chars() {
+        token.push(c);
+    }
+    println!("{}", text);
+    print!("{}", token);
+}
+*/
+
+fn get_token(chars: &mut std::str::Chars, token: &mut String) {
+    for c in chars {
+        if !c.is_whitespace() {
+            print!("{}", c);
+            token.push(c);
+            break;
+        }
+    }
+    //print!("{}", token);
+    token
+}
