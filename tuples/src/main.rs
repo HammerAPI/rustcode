@@ -1,6 +1,5 @@
 // Tuples can be used as function parameters
 fn reverse(pair: (i32, bool)) -> (bool, i32) {
-
     // You can bind tuple members to a variable
     let (integer, boolean) = pair;
 
@@ -13,20 +12,19 @@ struct Matrix(f32, f32, f32, f32);
 
 fn main() {
     // Tuples can hold multiple data types
-    let long_tuple = (1u8, 2u16, 3u32, 4u64, -1i8, -2i16, -3i32, -4i64,
-                      0.1f32, 0.2f64, 'a', true);
+    let long_tuple = (
+        1u8, 2u16, 3u32, 4u64, -1i8, -2i16, -3i32, -4i64, 0.1f32, 0.2f64, 'a', true,
+    );
 
     // You can access members of a tuple using indexing
     println!("long tuple first value: {}", long_tuple.1);
     println!("long tuple second value: {}", long_tuple.2);
-
 
     // Tuples can hold tuples
     let tuple_of_tuples = ((1u8, 2u16, 2u32), (4u64, -1i8, -2i16));
 
     // You can print tuples
     println!("Tuple of tuples: {:?}", tuple_of_tuples);
-
 
     // But long Tuples cannot be printed
     // let too_long_tuple = (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13);
@@ -48,6 +46,4 @@ fn main() {
     println!("{:?}, {:?}, {:?}, {:?}", a, b, c, d);
     let matrix = Matrix(1.1, 1.2, 2.1, 2.2);
     println!("{:?}", matrix);
-
-
 }
