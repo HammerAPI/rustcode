@@ -1,0 +1,11 @@
+word = { (ASCII_ALPHANUMERIC)+ }
+stdio = { (">>") | ("2>") | ("&>") | ("1>") | ("<") | (">") }
+pipe = { ("|") }
+file_char = { ( "-" | "_" | "\\" | "/" | ".") }
+
+redirect = { pipe | stdio }
+file = { ((word | file_char+) ~ file_char*)+ }
+whole = { redirect | file | word }
+commands = { (whole ~ WHITE_SPACE*)+ }
+quoted = { QUOTATION_MARK ~ commands ~ QUOTATION_MARK }
+line = { ((commands | quoted) ~ WHITE_SPACE*)* }

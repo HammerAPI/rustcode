@@ -9,6 +9,13 @@ fn main() {
     let secret_number = rand::thread_rng().gen_range(1, 101);
     println!("The secret number is {}", secret_number);
 
+    let mut rands = vec![];
+    for i in (0..100).rev() {
+        //let random = rand::thread_rng().gen_range(1, 301);
+        rands.push(i);
+    }
+    println!("{:?}", rands);
+
     loop {
         println!("\nPlease input your guess: ");
 

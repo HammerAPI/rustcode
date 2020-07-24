@@ -1,0 +1,10 @@
+this
+is
+a
+list
+of
+words
+to
+be
+added
+together
